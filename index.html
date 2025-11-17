@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your Name | About</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-content">
+      <div class="logo">
+        <a href="index.html">Your Name</a>
+      </div>
+      <nav class="nav">
+        <a href="index.html" class="nav-link active">About</a>
+        <a href="projects.html" class="nav-link">Projects</a>
+        <a href="resume.html" class="nav-link">Resume</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero / intro -->
+    <section class="hero">
+      <div class="container hero-content">
+        <div>
+          <p class="hero-eyebrow">Hi, I’m</p>
+          <h1 class="hero-title">Your Name</h1>
+          <p class="hero-subtitle">
+            Short 1–2 line description. For example:<br />
+            “CS student and developer interested in data science, web development, and AI.”
+          </p>
+          <div class="hero-actions">
+            <a href="projects.html" class="btn primary-btn">View my projects</a>
+            <a href="#contact" class="btn secondary-btn">Contact me</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- About section -->
+    <section class="about">
+      <div class="container">
+        <h2>About Me</h2>
+        <p>
+          Write a short paragraph or two about who you are, what you’re studying/doing,
+          and what you’re interested in. For example:
+        </p>
+        <p>
+          I’m a ____ student at ____ with a focus on ____. I enjoy working on projects
+          involving ____ and ____. Recently, I’ve been building ____ and exploring ____.
+        </p>
+        <p>
+          Outside of coding, I enjoy ____, ____, and ____.
+        </p>
+      </div>
+    </section>
+
+    <!-- Contact section -->
+    <section class="contact" id="contact">
+      <div class="container">
+        <h2>Contact Me</h2>
+        <p>
+          I’m always happy to connect about projects, internships, or collaborations.
+          The best ways to reach me are:
+        </p>
+        <ul class="contact-list">
+          <li><strong>Email:</strong> <a href="mailto:youremail@example.com">youremail@example.com</a></li>
+          <li><strong>GitHub:</strong> <a href="https://github.com/your-username" target="_blank">github.com/your-username</a></li>
+          <li><strong>LinkedIn:</strong> <a href="https://www.linkedin.com/in/your-link" target="_blank">linkedin.com/in/your-link</a></li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© <span id="year"></span> Your Name. All rights reserved.</p>
+    </div>
+    <script>
+      // small JS just to keep the year updated
+      document.getElementById("year").textContent = new Date().getFullYear();
+    </script>
+  </footer>
+</body>
+</html>
