@@ -73,15 +73,30 @@
       </div>
     </section>
   </main>
+<footer class="site-footer">
+  <div class="container">
+    <p>© <span id="year"></span> Your Name. All rights reserved.</p>
+  </div>
+  <script>
+    // keep the year updated
+    document.getElementById("year").textContent = new Date().getFullYear();
+    // reveal the Contact section with a slide/fade when it enters view
+    const contactSection = document.querySelector(".contact");
+    if (contactSection) {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              contactSection.classList.add("visible");
+            }
+          });
+        },
+        { threshold: 0.25 }
+      );
+      observer.observe(contactSection);
+    }
+  </script>
+</footer>
 
-  <footer class="site-footer">
-    <div class="container">
-      <p>© <span id="year"></span> Vincent Feng. All rights reserved.</p>
-    </div>
-    <script>
-      // small JS just to keep the year updated
-      document.getElementById("year").textContent = new Date().getFullYear();
-    </script>
-  </footer>
 </body>
 </html>

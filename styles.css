@@ -1,3 +1,8 @@
+html {
+  scroll-behavior: smooth;
+}
+
+
 /* Base styles */
 *,
 *::before,
@@ -171,6 +176,18 @@ body {
 .about,
 .contact {
   padding: 2.5rem 0;
+}
+
+/* Contact section animation */
+.contact {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.contact.visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .about h2,
