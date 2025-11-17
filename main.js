@@ -1,9 +1,11 @@
 document.addEventListener("DOMContentLoaded", () => {
+  // ====== YEAR IN FOOTER ======
   const yearSpan = document.getElementById("year");
   if (yearSpan) {
     yearSpan.textContent = String(new Date().getFullYear());
   }
 
+  // ====== CONTACT SECTION VISIBILITY (SLIDE / FADE IN) ======
   const contactSection = document.getElementById("contact");
   if (contactSection) {
     const observer = new IntersectionObserver(
@@ -19,6 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
     observer.observe(contactSection);
   }
 
+  // ====== HAND + PAGE CRUMPLE FOR "CONTACT ME" ======
   const contactTrigger = document.getElementById("contact-trigger");
   const hand = document.querySelector(".hand-cta");
   const pageShell = document.querySelector(".page-shell");
@@ -27,6 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
     contactTrigger.addEventListener("click", (event) => {
       event.preventDefault();
 
+      // Avoid double-trigger
       if (hand.classList.contains("is-running")) {
         contactSection.scrollIntoView({ behavior: "smooth" });
         return;
@@ -34,24 +38,126 @@ document.addEventListener("DOMContentLoaded", () => {
 
       hand.classList.add("is-running", "is-visible");
 
+      // Stage 1: hand slides down & page crumples a bit
       requestAnimationFrame(() => {
         hand.classList.add("is-grabbing");
         pageShell.classList.add("is-crumpled");
       });
 
+      // Stage 2: hand pulls upward + start smooth scroll to contact
       setTimeout(() => {
         hand.classList.add("is-pulling");
         contactSection.scrollIntoView({ behavior: "smooth" });
       }, 350);
 
+      // Stage 3: cleanup
       setTimeout(() => {
-        hand.className = "hand-cta";
+        hand.className = "hand-cta"; // reset to base classes
         pageShell.classList.remove("is-crumpled");
       }, 1200);
 
       setTimeout(() => {
         hand.classList.remove("is-running");
       }, 1300);
+    });
+  }
+
+  // ====== PARABOLIC PAPER SHOT FOR "VIEW MY PROJECTS" ======
+  const projectsTrigger = document.getElementById("projects-trigger");
+  const body = document.body;
+
+  if (projectsTrigger && contactTrigger) {
+    projectsTrigger.addEventListener("click", (event) => {
+      event.preventDefault();
+
+      // avoid spamming animation
+      if (body.classList.contains("is-project-shot-running")) {
+        return;
+      }
+      body.classList.add("is-project-shot-running");
+
+      // Get button positions in the viewport
+      const paperRect = projectsTrigger.getBoundingClientRect();
+      const netRect = contactTrigger.getBoundingClientRect();
+
+      // Create overlays
+      const paper = document.createElement("div");
+      paper.className = "shot-paper";
+
+      const net = document.createElement("div");
+      net.className = "shot-net";
+
+      // Start both at their respective button centers
+      const startX = paperRect.left + paperRect.width / 2;
+      const startY = paperRect.top + paperRect.height / 2;
+      const endX = netRect.left + netRect.width / 2;
+      const endY = netRect.top + netRect.height / 2;
+
+      paper.style.left = `${startX}px`;
+      paper.style.top = `${startY}px`;
+      net.style.left = `${endX}px`;
+      net.style.top = `${endY}px`;
+
+      document.body.appendChild(paper);
+      document.body.appendChild(net);
+
+      // Hide actual buttons while the shot plays
+      projectsTrigger.classList.add("is-hidden-for-shot");
+      contactTrigger.classList.add("is-hidden-for-shot");
+
+      // Make the net pop in slightly
+      requestAnimationFrame(() => {
+        net.classList.add("is-visible");
+      });
+
+      // Animation settings
+      const duration = 700; // ms for the shot
+      const peakHeight = 180; // how high the paper arcs (px)
+      const startTime = performance.now();
+
+      function animate(time) {
+        const elapsed = time - startTime;
+        const t = Math.min(elapsed / duration, 1); // clamp 0..1
+
+        // Linear interpolation for x and baseline y
+        const x = startX + (endX - startX) * t;
+        const baseY = startY + (endY - startY) * t;
+
+        // Add a parabolic offset upwards (like a jump)
+        // 4*t*(1-t) makes a bump that is 0 at t=0,1 and 1 at t=0.5
+        const arcOffset = peakHeight * 4 * t * (1 - t);
+        const y = baseY - arcOffset;
+
+        // Apply position + a little spin for flair
+        paper.style.left = `${x}px`;
+        paper.style.top = `${y}px`;
+        const rotation = 720 * t; // 2 full spins across the flight
+        paper.style.transform = `translate(-50%, -50%) rotate(${rotation}deg)`;
+
+        if (t < 1) {
+          requestAnimationFrame(animate);
+        } else {
+          // We've "scored" – small net pop
+          net.classList.add("is-scored");
+
+          setTimeout(() => {
+            // Cleanup overlays
+            paper.remove();
+            net.remove();
+
+            // Show buttons again (for when user comes back)
+            projectsTrigger.classList.remove("is-hidden-for-shot");
+            contactTrigger.classList.remove("is-hidden-for-shot");
+
+            body.classList.remove("is-project-shot-running");
+
+            // Finally navigate to the projects page
+            window.location.href = projectsTrigger.href;
+          }, 350);
+        }
+      }
+
+      requestAnimationFrame(animate);
     });
   }
 });

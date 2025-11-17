@@ -314,3 +314,69 @@ body {
     padding-top: 2.5rem;
   }
 }
+
+/* Hide buttons during shot animation so we only see the overlays */
+.btn.is-hidden-for-shot {
+  visibility: hidden;
+}
+
+/* Paper + net overlays (fixed to viewport) */
+.shot-paper,
+.shot-net {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 998; /* slightly under hand if both existed, but high overall */
+}
+
+/* Crumpled paper image */
+.shot-paper {
+  width: 72px;
+  height: 72px;
+  background-image: url("paper.png"); /* <-- your crumpled paper asset */
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  filter: drop-shadow(0 12px 22px rgba(15, 23, 42, 0.8));
+  transition: transform 0.15s ease-out;
+}
+
+/* Basketball net image */
+.shot-net {
+  width: 110px;
+  height: 110px;
+  background-image: url("net.png"); /* <-- your basketball net asset */
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.8);
+  transition:
+    opacity 0.2s ease-out,
+    transform 0.2s ease-out;
+}
+
+/* When the net becomes visible / pops in */
+.shot-net.is-visible {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+/* Optional tiny "score" effect when the paper lands */
+.shot-net.is-scored {
+  animation: netScorePop 0.22s ease-out;
+}
+
+@keyframes netScorePop {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.05);
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
