@@ -93,20 +93,30 @@
 
   <script>
     document.addEventListener("DOMContentLoaded", () => {
-      // Keep the year updated
+      console.log("✅ DOMContentLoaded fired");
+
+      // YEAR
       const yearSpan = document.getElementById("year");
+      console.log("yearSpan element:", yearSpan);
       if (yearSpan) {
         yearSpan.textContent = String(new Date().getFullYear());
+        console.log("✅ Year set to", yearSpan.textContent);
+      } else {
+        console.warn("⚠️ Could not find #year span");
       }
 
+      // CONTACT SECTION + intersection observer
       const contactSection = document.getElementById("contact");
+      console.log("contactSection element:", contactSection);
 
-      // Contact section slide/fade when it comes into view
       if (contactSection) {
+        console.log("✅ Setting up IntersectionObserver for contact section");
         const observer = new IntersectionObserver(
           (entries) => {
             entries.forEach((entry) => {
+              console.log("👀 IntersectionObserver entry:", entry);
               if (entry.isIntersecting) {
+                console.log("✨ Contact section became visible -> adding .visible");
                 contactSection.classList.add("visible");
               }
             });
@@ -115,48 +125,77 @@
         );
 
         observer.observe(contactSection);
+      } else {
+        console.warn("⚠️ #contact section not found");
       }
 
-      // Hand + crumple animation for the Contact button
+      // HAND + CRUMPLE ANIMATION
       const contactTrigger = document.getElementById("contact-trigger");
       const hand = document.querySelector(".hand-cta");
       const pageShell = document.querySelector(".page-shell");
 
-      if (contactTrigger && hand && pageShell && contactSection) {
-        contactTrigger.addEventListener("click", (event) => {
-          event.preventDefault();
+      console.log("contactTrigger:", contactTrigger);
+      console.log("hand element (.hand-cta):", hand);
+      console.log("pageShell (.page-shell):", pageShell);
 
-          // Avoid double-trigger spam
-          if (hand.classList.contains("is-running")) {
-            contactSection.scrollIntoView({ behavior: "smooth" });
-            return;
-          }
-
-          hand.classList.add("is-running", "is-visible");
-
-          // Stage 1: hand slides down & page crumples a bit
-          requestAnimationFrame(() => {
-            hand.classList.add("is-grabbing");
-            pageShell.classList.add("is-crumpled");
-          });
-
-          // Stage 2: hand pulls upward + start smooth scroll to contact
-          setTimeout(() => {
-            hand.classList.add("is-pulling");
-            contactSection.scrollIntoView({ behavior: "smooth" });
-          }, 350);
-
-          // Stage 3: clean up animation classes
-          setTimeout(() => {
-            hand.className = "hand-cta"; // reset to base classes
-            pageShell.classList.remove("is-crumpled");
-          }, 1200);
-
-          setTimeout(() => {
-            hand.classList.remove("is-running");
-          }, 1300);
-        });
+      if (!(contactTrigger && hand && pageShell && contactSection)) {
+        console.warn("⚠️ One or more required elements are missing:");
+        if (!contactTrigger) console.warn("  - contactTrigger (#contact-trigger) is missing");
+        if (!hand) console.warn("  - .hand-cta is missing");
+        if (!pageShell) console.warn("  - .page-shell is missing");
+        if (!contactSection) console.warn("  - #contact is missing");
+        return; // stop here so we don't throw errors
       }
+
+      // Just to make sure the hand is actually on the page visually
+      console.log("✅ All required elements found. Hand animation is wired.");
+      console.log("📏 Hand initial top:", getComputedStyle(hand).top);
+
+      contactTrigger.addEventListener("click", (event) => {
+        console.log("👉 Contact button clicked");
+        event.preventDefault();
+
+        if (hand.classList.contains("is-running")) {
+          console.log("⏩ Animation already running, just scrolling to contact");
+          contactSection.scrollIntoView({ behavior: "smooth" });
+          return;
+        }
+
+        console.log("🎬 Starting hand animation sequence");
+        hand.classList.add("is-running", "is-visible");
+        console.log("  - Added classes: is-running, is-visible");
+
+        // Stage 1: hand slides down & page crumples a bit
+        requestAnimationFrame(() => {
+          console.log("🎯 Stage 1: grab -> adding is-grabbing + is-crumpled");
+          hand.classList.add("is-grabbing");
+          pageShell.classList.add("is-crumpled");
+          console.log("  - hand classes:", hand.className);
+          console.log("  - pageShell classes:", pageShell.className);
+        });
+
+        // Stage 2: hand pulls upward + start smooth scroll to contact
+        setTimeout(() => {
+          console.log("🎯 Stage 2: pull -> adding is-pulling and starting scrollIntoView");
+          hand.classList.add("is-pulling");
+          console.log("  - hand classes:", hand.className);
+          contactSection.scrollIntoView({ behavior: "smooth" });
+        }, 350);
+
+        // Stage 3: clean up animation classes
+        setTimeout(() => {
+          console.log("🧹 Stage 3: reset classes on hand and pageShell");
+          hand.className = "hand-cta"; // reset to base
+          pageShell.classList.remove("is-crumpled");
+          console.log("  - hand classes:", hand.className);
+          console.log("  - pageShell classes:", pageShell.className);
+        }, 1200);
+
+        setTimeout(() => {
+          console.log("✅ Animation fully done, clearing is-running flag");
+          hand.classList.remove("is-running");
+        }, 1300);
+      });
     });
   </script>
 </body>
