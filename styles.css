@@ -379,3 +379,27 @@ body {
     transform: translate(-50%, -50%) scale(1);
   }
 }
+
+/* Contact button morphing into net */
+#contact-trigger {
+  position: relative;
+  overflow: hidden;
+}
+
+#contact-trigger .btn-label {
+  display: inline-block;
+  transition: opacity 0.18s ease-out, transform 0.18s ease-out;
+}
+
+/* When it's morphing, shrink + fade the label and give the button a subtle "pop" */
+#contact-trigger.is-morphing-to-net {
+  transition: transform 0.22s ease-out, background 0.22s ease-out, border-color 0.22s ease-out;
+  transform: translateY(-2px) scale(1.05);
+  background: rgba(15, 23, 42, 0.0);
+  border-color: transparent;
+}
+
+#contact-trigger.is-morphing-to-net .btn-label {
+  opacity: 0;
+  transform: translateY(4px) scale(0.92);
+}

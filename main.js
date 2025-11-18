@@ -1,4 +1,17 @@
 document.addEventListener("DOMContentLoaded", () => {
+  // Preload crumple images so they don't flash blank on first use
+  const crumpleStageUrls = [
+    "paper_stage1.png",
+    "paper_stage2.png",
+    "paper_stage3.png",
+    "paper.png",
+  ];
+
+  crumpleStageUrls.forEach((src) => {
+    const img = new Image();
+    img.src = src;
+  });
+
   // ====== YEAR IN FOOTER ======
   const yearSpan = document.getElementById("year");
   if (yearSpan) {
@@ -62,13 +75,12 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // ====== PARABOLIC PAPER SHOT FOR "VIEW MY PROJECTS" ======
+      // ====== PARABOLIC PAPER SHOT FOR "VIEW MY PROJECTS" ======
   const projectsTrigger = document.getElementById("projects-trigger");
   const body = document.body;
 
   if (projectsTrigger && contactTrigger) {
-    // Get the destination from data-href
-    const targetHref = projectsTrigger.dataset.href;
+    const targetHref = projectsTrigger.getAttribute("data-href") || projectsTrigger.getAttribute("href"); // final destination
 
     projectsTrigger.addEventListener("click", (event) => {
       event.preventDefault();
@@ -79,9 +91,16 @@ document.addEventListener("DOMContentLoaded", () => {
       }
       body.classList.add("is-project-shot-running");
 
-      // Get button positions in the viewport
+      // Get button positions in the viewport BEFORE hiding them
       const paperRect = projectsTrigger.getBoundingClientRect();
       const netRect = contactTrigger.getBoundingClientRect();
+
+      // Hide actual buttons immediately so you don't see them under the overlay
+      projectsTrigger.classList.add("is-hidden-for-shot");
+      contactTrigger.classList.add("is-hidden-for-shot");
+
+      // Visually morph the contact button to the net
+      contactTrigger.classList.add("is-morphing-to-net");
 
       // Create overlays
       const paper = document.createElement("div");
@@ -90,7 +109,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const net = document.createElement("div");
       net.className = "shot-net";
 
-      // Make sure the paper is definitely above the net
+      // Make sure paper is above net
       paper.style.zIndex = "10002";
       net.style.zIndex = "10001";
 
@@ -100,86 +119,144 @@ document.addEventListener("DOMContentLoaded", () => {
       const endX = netRect.left + netRect.width / 2;
       const endY = netRect.top + netRect.height / 2;
 
+      // Position overlays
       paper.style.left = `${startX}px`;
       paper.style.top = `${startY}px`;
       net.style.left = `${endX}px`;
       net.style.top = `${endY}px`;
 
-      document.body.appendChild(net);   // net first
-      document.body.appendChild(paper); // paper on top
+      // ---- Use the real button as the first "flat" stage ----
+      // Match size + background to the original button
+      const btnStyles = window.getComputedStyle(projectsTrigger);
+      paper.style.width = `${paperRect.width}px`;
+      paper.style.height = `${paperRect.height}px`;
+      paper.style.borderRadius = btnStyles.borderRadius;
+      paper.style.background = btnStyles.background; // same gradient as button
+      paper.style.backgroundImage = "none"; // we'll set PNGs later
+      paper.style.backgroundSize = "cover";
+      paper.style.backgroundRepeat = "no-repeat";
+      paper.style.backgroundPosition = "center";
 
-      // Hide actual buttons while the shot plays
-      projectsTrigger.classList.add("is-hidden-for-shot");
-      contactTrigger.classList.add("is-hidden-for-shot");
+      document.body.appendChild(net);
+      document.body.appendChild(paper);
 
       // Make the net pop in slightly
       requestAnimationFrame(() => {
         net.classList.add("is-visible");
       });
 
-      // Animation settings
-      const duration = 700; // ms for the shot
-      const peakHeight = 180; // how high the paper arcs (px)
-      const startTime = performance.now();
+      // ====== CRUMPLE STAGES (smooth, no flicker) ======
+      const crumpleStages = [
+        "url('paper_stage1.png')",
+        "url('paper_stage2.png')",
+        "url('paper_stage3.png')",
+        "url('paper.png')", // final crumpled ball
+      ];
 
-      function animate(time) {
-        const elapsed = time - startTime;
-        const t = Math.min(elapsed / duration, 1); // clamp 0..1
+      let stageIndex = 0;
+      const stageDuration = 200; // ms per frame - tweak for speed
 
-        const x = startX + (endX - startX) * t;
-        const baseY = startY + (endY - startY) * t;
-        const arcOffset = peakHeight * 4 * t * (1 - t);
-        const y = baseY - arcOffset;
+      function runCrumpleStage() {
+        paper.style.backgroundImage = crumpleStages[stageIndex];
+        paper.style.backgroundRepeat = "no-repeat";
+        paper.style.backgroundPosition = "center";
 
-        paper.style.left = `${x}px`;
-        paper.style.top = `${y}px`;
-        const rotation = 720 * t;
-        paper.style.transform = `translate(-50%, -50%) rotate(${rotation}deg)`;
-
-        if (t < 1) {
-          requestAnimationFrame(animate);
+        // 🔽 make stage1 + stage2 bigger, keep stage3 + paper.png as-is
+        if (stageIndex === 0) {
+          // stage1: largest
+          paper.style.backgroundSize = "150% auto";
+        } else if (stageIndex === 1) {
+          // stage2: slightly smaller
+          paper.style.backgroundSize = "130% auto";
+        } else if (stageIndex === 2) {
+          // stage3: smaller
+          paper.style.backgroundSize = "50% auto";
         } else {
-          // Phase 2: fall straight down + fade out
+          // stage3 + final ball
+          paper.style.backgroundSize = "contain";
+        }
 
-          // Little net pop when it "scores"
-          net.classList.add("is-scored");
-
-          const fallDistance = 75;      // px to fall
-          const fallDuration = 350;     // ms for the fall
-          const fallStartY = endY;      // it lands at the net's Y
-          const fallStartTime = performance.now();
-
-          function fallStep(now) {
-            const elapsed = now - fallStartTime;
-            const tf = Math.min(elapsed / fallDuration, 1); // 0..1
-
-            // Straight down from the rim
-            const currentY = fallStartY + fallDistance * tf;
-            paper.style.top = `${currentY}px`;
-
-            // Fade from 1 → 0
-            paper.style.opacity = String(1 - tf);
-
-            if (tf < 1) {
-              requestAnimationFrame(fallStep);
-            } else {
-              // Done falling – cleanup and navigate
-              paper.remove();
-              net.remove();
-
-              projectsTrigger.classList.remove("is-hidden-for-shot");
-              contactTrigger.classList.remove("is-hidden-for-shot");
-              body.classList.remove("is-project-shot-running");
-
-              window.location.href = targetHref; // or targetHref if you stored it
-            }
-          }
-
-          // Start the fall immediately after the shot finishes
-          requestAnimationFrame(fallStep);
+        if (stageIndex < crumpleStages.length - 1) {
+          stageIndex += 1;
+          setTimeout(runCrumpleStage, stageDuration);
+        } else {
+          startShot();
         }
       }
-      requestAnimationFrame(animate);
+
+      // ====== PARABOLIC SHOT + FALL THROUGH NET ======
+      function startShot() {
+        const duration = 700; // ms for the shot
+        const peakHeight = 180; // arc height (px)
+        const startTime = performance.now();
+
+        function animate(time) {
+          const elapsed = time - startTime;
+          const t = Math.min(elapsed / duration, 1); // 0..1
+
+          // Linear interpolation for x and baseline y
+          const x = startX + (endX - startX) * t;
+          const baseY = startY + (endY - startY) * t;
+
+          // Parabolic arc
+          const arcOffset = peakHeight * 4 * t * (1 - t);
+          const y = baseY - arcOffset;
+
+          paper.style.left = `${x}px`;
+          paper.style.top = `${y}px`;
+
+          const rotation = 720 * t; // 2 spins across the flight
+          paper.style.transform = `translate(-50%, -50%) rotate(${rotation}deg)`;
+
+          if (t < 1) {
+            requestAnimationFrame(animate);
+          } else {
+            // Hit the net: tiny pop
+            net.classList.add("is-scored");
+
+            // Fall straight down 75px and fade out
+            const fallDistance = 75;
+            const fallDuration = 350;
+            const fallStartY = endY;
+            const fallStartTime = performance.now();
+
+            function fallStep(now) {
+              const elapsedFall = now - fallStartTime;
+              const tf = Math.min(elapsedFall / fallDuration, 1); // 0..1
+
+              const currentY = fallStartY + fallDistance * tf;
+              paper.style.top = `${currentY}px`;
+              paper.style.opacity = String(1 - tf);
+
+              if (tf < 1) {
+                requestAnimationFrame(fallStep);
+              } else {
+                // Done: cleanup + navigate
+                paper.remove();
+                net.remove();
+
+                projectsTrigger.classList.remove("is-hidden-for-shot");
+                contactTrigger.classList.remove("is-hidden-for-shot");
+                contactTrigger.classList.remove("is-morphing-to-net");
+                body.classList.remove("is-project-shot-running");
+
+                if (targetHref) {
+                  window.location.href = targetHref;
+                } else {
+                  console.warn("No targetHref set on #projects-trigger");
+                }
+              }
+            }
+
+            requestAnimationFrame(fallStep);
+          }
+        }
+
+        requestAnimationFrame(animate);
+      }
+
+      // Start with the button-look, then quickly crumple through PNG stages
+      runCrumpleStage();
     });
   }
 });
