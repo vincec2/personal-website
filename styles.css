@@ -328,7 +328,6 @@ body {
   top: 50%;
   transform: translate(-50%, -50%);
   pointer-events: none;
-  z-index: 998; /* slightly under hand if both existed, but high overall */
 }
 
 /* Crumpled paper image */
@@ -341,6 +340,7 @@ body {
   background-position: center;
   filter: drop-shadow(0 12px 22px rgba(15, 23, 42, 0.8));
   transition: transform 0.15s ease-out;
+  z-index: 998;
 }
 
 /* Basketball net image */
@@ -356,6 +356,7 @@ body {
   transition:
     opacity 0.2s ease-out,
     transform 0.2s ease-out;
+  z-index: 997;
 }
 
 /* When the net becomes visible / pops in */
