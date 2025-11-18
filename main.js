@@ -139,24 +139,46 @@ document.addEventListener("DOMContentLoaded", () => {
         if (t < 1) {
           requestAnimationFrame(animate);
         } else {
+          // Phase 2: fall straight down + fade out
+
+          // Little net pop when it "scores"
           net.classList.add("is-scored");
 
-          setTimeout(() => {
-            paper.remove();
-            net.remove();
+          const fallDistance = 75;      // px to fall
+          const fallDuration = 350;     // ms for the fall
+          const fallStartY = endY;      // it lands at the net's Y
+          const fallStartTime = performance.now();
 
-            projectsTrigger.classList.remove("is-hidden-for-shot");
-            contactTrigger.classList.remove("is-hidden-for-shot");
-            body.classList.remove("is-project-shot-running");
+          function fallStep(now) {
+            const elapsed = now - fallStartTime;
+            const tf = Math.min(elapsed / fallDuration, 1); // 0..1
 
-            // Lastly navigate to the projects page
-            if (targetHref) {
-              window.location.href = targetHref;
+            // Straight down from the rim
+            const currentY = fallStartY + fallDistance * tf;
+            paper.style.top = `${currentY}px`;
+
+            // Fade from 1 → 0
+            paper.style.opacity = String(1 - tf);
+
+            if (tf < 1) {
+              requestAnimationFrame(fallStep);
+            } else {
+              // Done falling – cleanup and navigate
+              paper.remove();
+              net.remove();
+
+              projectsTrigger.classList.remove("is-hidden-for-shot");
+              contactTrigger.classList.remove("is-hidden-for-shot");
+              body.classList.remove("is-project-shot-running");
+
+              window.location.href = targetHref; // or targetHref if you stored it
             }
-          }, 350);
+          }
+
+          // Start the fall immediately after the shot finishes
+          requestAnimationFrame(fallStep);
         }
       }
-
       requestAnimationFrame(animate);
     });
   }
