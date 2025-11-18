@@ -67,6 +67,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const body = document.body;
 
   if (projectsTrigger && contactTrigger) {
+    // Get the destination from data-href
+    const targetHref = projectsTrigger.dataset.href;
+
     projectsTrigger.addEventListener("click", (event) => {
       event.preventDefault();
 
@@ -87,6 +90,10 @@ document.addEventListener("DOMContentLoaded", () => {
       const net = document.createElement("div");
       net.className = "shot-net";
 
+      // Make sure the paper is definitely above the net
+      paper.style.zIndex = "10002";
+      net.style.zIndex = "10001";
+
       // Start both at their respective button centers
       const startX = paperRect.left + paperRect.width / 2;
       const startY = paperRect.top + paperRect.height / 2;
@@ -98,8 +105,8 @@ document.addEventListener("DOMContentLoaded", () => {
       net.style.left = `${endX}px`;
       net.style.top = `${endY}px`;
 
-      document.body.appendChild(paper);
-      document.body.appendChild(net);
+      document.body.appendChild(net);   // net first
+      document.body.appendChild(paper); // paper on top
 
       // Hide actual buttons while the shot plays
       projectsTrigger.classList.add("is-hidden-for-shot");
@@ -119,40 +126,33 @@ document.addEventListener("DOMContentLoaded", () => {
         const elapsed = time - startTime;
         const t = Math.min(elapsed / duration, 1); // clamp 0..1
 
-        // Linear interpolation for x and baseline y
         const x = startX + (endX - startX) * t;
         const baseY = startY + (endY - startY) * t;
-
-        // Add a parabolic offset upwards (like a jump)
-        // 4*t*(1-t) makes a bump that is 0 at t=0,1 and 1 at t=0.5
         const arcOffset = peakHeight * 4 * t * (1 - t);
         const y = baseY - arcOffset;
 
-        // Apply position + a little spin for flair
         paper.style.left = `${x}px`;
         paper.style.top = `${y}px`;
-        const rotation = 720 * t; // 2 full spins across the flight
+        const rotation = 720 * t;
         paper.style.transform = `translate(-50%, -50%) rotate(${rotation}deg)`;
 
         if (t < 1) {
           requestAnimationFrame(animate);
         } else {
-          // We've "scored" – small net pop
           net.classList.add("is-scored");
 
           setTimeout(() => {
-            // Cleanup overlays
             paper.remove();
             net.remove();
 
-            // Show buttons again (for when user comes back)
             projectsTrigger.classList.remove("is-hidden-for-shot");
             contactTrigger.classList.remove("is-hidden-for-shot");
-
             body.classList.remove("is-project-shot-running");
 
             // Finally navigate to the projects page
-            window.location.href = projectsTrigger.href;
+            if (targetHref) {
+              window.location.href = targetHref;
+            }
           }, 350);
         }
       }
