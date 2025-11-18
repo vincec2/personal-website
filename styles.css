@@ -332,15 +332,14 @@ body {
 
 /* Crumpled paper image */
 .shot-paper {
-  width: 72px;
-  height: 72px;
+  width: 50px;
+  height: 50px;
   background-image: url("paper.png"); /* <-- your crumpled paper asset */
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
   filter: drop-shadow(0 12px 22px rgba(15, 23, 42, 0.8));
   transition: transform 0.15s ease-out;
-  z-index: 998;
 }
 
 /* Basketball net image */
@@ -356,7 +355,6 @@ body {
   transition:
     opacity 0.2s ease-out,
     transform 0.2s ease-out;
-  z-index: 997;
 }
 
 /* When the net becomes visible / pops in */

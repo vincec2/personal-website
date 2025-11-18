@@ -149,7 +149,7 @@ document.addEventListener("DOMContentLoaded", () => {
             contactTrigger.classList.remove("is-hidden-for-shot");
             body.classList.remove("is-project-shot-running");
 
-            // Finally navigate to the projects page
+            // Lastly navigate to the projects page
             if (targetHref) {
               window.location.href = targetHref;
             }
