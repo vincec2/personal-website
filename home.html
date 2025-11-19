@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vincent Feng | Home</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- Everything that should "crumple" lives inside page-shell -->
+  <div class="page-shell">
+    <main>
+      <!-- Hero / intro -->
+      <section class="hero" id="introSection">
+        <div class="container hero-layout">
+          <!-- Left side: portrait card -->
+          <aside class="hero-photo-card">
+            <div
+              class="hero-photo"
+              style="background-image: url('portrait.jpg');"
+              aria-hidden="true"
+            ></div>
+          </aside>
+          <div>
+            <p class="hero-eyebrow">Hi, I’m</p>
+            <h1 class="hero-title">Vincent Feng</h1>
+            <p class="hero-subtitle">
+              Computer Science student currently looking for internships.<br /> 
+              Interested in frontend, full-stack, and software engineering roles, so please feel free to reach out if there are any opportunities!
+            </p>
+            <div class="hero-actions">
+              <a
+                data-href="projects.html"
+                class="btn primary-btn"
+                id="projects-trigger"
+              >
+                View my projects
+              </a>
+              <a href="#contact" class="btn secondary-btn" id="contact-trigger">
+                <span class="btn-label">Contact me</span>
+              </a>
+              <a href="Resume.pdf" class="btn third-btn" id="resume-trigger">
+                <span class="btn-label">Resume</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Moved nav bar below introduction
+      <header class="site-header">
+      <div class="container header-content">
+        <nav class="nav">
+          <a href="#about" class="nav-link">About</a>
+          <a href="projects.html" class="nav-link" id="projects-nav">Projects</a>
+          <a href="resume.html" class="nav-link">Resume</a>
+        </nav>
+      </div>
+    </header> -->
+
+      <!-- About section -->
+      <section class="about" id="about">
+        <div class="container about-shell">
+          <!-- Two photos, same size -->
+          <div class="about-photo-strip">
+            <div class="about-photo" style="background-image: url('aboutme2.jpg');"></div>
+            <div class="about-photo" style="background-image: url('aboutme1.jpg');"></div>
+          </div>
+
+          <!-- Sliding card that always covers exactly one photo -->
+          <article class="about-card">
+            <button class="about-slide-btn" type="button" aria-label="Slide about panel left/right">
+              ⇆
+            </button>
+            <div class="about-content about-content--primary">
+              <p class="about-kicker">About me</p>
+              <h2 class="about-title">Welcome!<br />Let me tell you a little about myself.</h2>
+              <p>
+                I've always been someone who loved to create, whether it be comic books, lego structures, or board games. 
+                Combine that with my tendency to look for patterns, and the reason for my interest in Computer Science becomes evident.
+              </p>
+              <p>
+                Currently in my fourth year of my Honours Specialization in Computer Science program at Western University, I'm excited
+                going forward knowing there is so much more I do not know.
+              </p>
+            </div>
+            <div class="about-content about-content--secondary">
+              <p class="about-kicker">More about me</p>
+              <h2 class="about-title">So what do I do in my free time?</h2>
+              <p>
+                In my free time, I enjoy going to the gym, playing recreational sports, and creating personalized projects.
+                Recently, I've been getting into volleyball. Considering I'm not vertically gifted in any way, it's been challenging,
+                but in my opinion, that only makes it more fun...
+              </p>
+              <p>
+                I also have a silly golden retriever named Tofu. I spend a lot of time going on walks with him, playing with him,
+                and checking out new dog parks with him.
+              </p>
+              <p>
+                Overall, I firmly believe that learning new things stimulates me positively, and that's why, whether it's a new 
+                programming language or playing the saxophone, I try my hardest to learn!
+              </p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- Contact section -->
+      <section class="contact" id="contact">
+        <div class="container">
+          <h2>Contact Me</h2>
+          <p>
+            I’m always happy to connect about projects, internships, or collaborations.
+          </p>
+
+          <div class="contact-grid">
+            <!-- Email -->
+            <div class="contact-card">
+              <div class="contact-icon" aria-hidden="true"><img src="gmail_icon.png"/></div>
+              <h3 class="contact-type">Email</h3>
+              <a class="contact-link" href="mailto:vince4ho@example.com">
+                vince4ho@gmail.com
+              </a>
+            </div>
+
+            <!-- GitHub -->
+            <div class="contact-card">
+              <div class="contact-icon" aria-hidden="true"><img src="github_icon.png"/></div>
+              <h3 class="contact-type">GitHub</h3>
+              <a class="contact-link" href="https://github.com/vincec2" target="_blank">
+                github.com/vincec2
+              </a>
+            </div>
+
+            <!-- LinkedIn -->
+            <div class="contact-card">
+              <div class="contact-icon" aria-hidden="true"><img src="linkedin_icon.png"/></div>
+              <h3 class="contact-type">LinkedIn</h3>
+              <a class="contact-link" href="https://www.linkedin.com/in/vf123098" target="_blank">
+                linkedin.com/in/vf123098
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <p>© <span id="year"></span> Vincent Feng. All rights reserved.</p>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Big hand overlay that "grabs" the page -->
+  <div class="hand-cta" aria-hidden="true">
+    <div class="hand-graphic"></div>
+  </div>
+
+  <script src="main.js" defer></script>
+</body>
+</html>

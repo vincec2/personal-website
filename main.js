@@ -77,7 +77,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // ====== PARABOLIC PAPER SHOT FOR "VIEW MY PROJECTS" ======
   const projectsTrigger = document.getElementById("projects-trigger");
+  //   // ====== MAKE NAV "PROJECTS" USE THE HERO ANIMATION ======
+  // const projectsNav = document.getElementById("projects-nav");
+
+  // if (projectsNav && projectsTrigger) {
+  //   projectsNav.addEventListener("click", (event) => {
+  //     event.preventDefault();      // stop the default instant navigation
+  //     projectsTrigger.click();     // pretend we clicked the hero button
+  //   });
+  // }
+
   const body = document.body;
+
+  const resumeTrigger = document.getElementById("resume-trigger");
+
 
   if (projectsTrigger && contactTrigger) {
     const targetHref = projectsTrigger.getAttribute("data-href") || projectsTrigger.getAttribute("href"); // final destination
@@ -94,10 +107,18 @@ document.addEventListener("DOMContentLoaded", () => {
       // Get button positions in the viewport BEFORE hiding them
       const paperRect = projectsTrigger.getBoundingClientRect();
       const netRect = contactTrigger.getBoundingClientRect();
+      const resumeRect = resumeTrigger
+        ? resumeTrigger.getBoundingClientRect()
+        : null;
 
       // Hide actual buttons immediately so you don't see them under the overlay
       projectsTrigger.classList.add("is-hidden-for-shot");
       contactTrigger.classList.add("is-hidden-for-shot");
+      if (resumeTrigger) {
+        resumeTrigger.classList.add("is-hidden-for-shot");
+        resumeTrigger.classList.add("is-morphing-to-scoreboard");
+      }
+
 
       // Visually morph the contact button to the net
       contactTrigger.classList.add("is-morphing-to-net");
@@ -108,6 +129,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const net = document.createElement("div");
       net.className = "shot-net";
+
+      let scoreboard = null;
+      if (resumeRect) {
+        scoreboard = document.createElement("div");
+        scoreboard.className = "shot-scoreboard";
+      }
+
 
       // Make sure paper is above net
       paper.style.zIndex = "10002";
@@ -124,6 +152,35 @@ document.addEventListener("DOMContentLoaded", () => {
       paper.style.top = `${startY}px`;
       net.style.left = `${endX}px`;
       net.style.top = `${endY}px`;
+
+      let scoreStartX, scoreStartY, scoreEndX, scoreEndY;
+
+      if (scoreboard && resumeRect) {
+        scoreStartX = resumeRect.left + resumeRect.width / 2;
+        scoreStartY = resumeRect.top + resumeRect.height / 2;
+
+        // Final position: above the net
+        scoreEndX = endX;
+        scoreEndY = endY - 90; // 140px above net; tweak as you like
+
+        scoreboard.style.left = `${scoreStartX}px`;
+        scoreboard.style.top = `${scoreStartY}px`;
+      }
+
+      document.body.appendChild(net);
+      document.body.appendChild(paper);
+      if (scoreboard) {
+        document.body.appendChild(scoreboard);
+      }
+      requestAnimationFrame(() => {
+        net.classList.add("is-visible");
+        if (scoreboard) {
+          scoreboard.classList.add("is-visible");
+        }
+      });
+
+
+
 
       // ---- Use the real button as the first "flat" stage ----
       // Match size + background to the original button
@@ -204,6 +261,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
           paper.style.left = `${x}px`;
           paper.style.top = `${y}px`;
+          if (scoreboard) {
+            const sx = scoreStartX + (scoreEndX - scoreStartX) * t;
+            const sy = scoreStartY + (scoreEndY - scoreStartY) * t;
+            scoreboard.style.left = `${sx}px`;
+            scoreboard.style.top = `${sy}px`;
+          }
 
           const rotation = 720 * t; // 2 spins across the flight
           paper.style.transform = `translate(-50%, -50%) rotate(${rotation}deg)`;
@@ -234,18 +297,22 @@ document.addEventListener("DOMContentLoaded", () => {
                 // Done: cleanup + navigate
                 paper.remove();
                 net.remove();
+                if (scoreboard) {
+                  scoreboard.remove();
+                }
 
                 projectsTrigger.classList.remove("is-hidden-for-shot");
                 contactTrigger.classList.remove("is-hidden-for-shot");
+                if (resumeTrigger) {
+                  resumeTrigger.classList.remove("is-hidden-for-shot");
+                  resumeTrigger.classList.remove("is-morphing-to-scoreboard");
+                }
                 contactTrigger.classList.remove("is-morphing-to-net");
                 body.classList.remove("is-project-shot-running");
 
-                if (targetHref) {
-                  window.location.href = targetHref;
-                } else {
-                  console.warn("No targetHref set on #projects-trigger");
-                }
+                window.location.href = targetHref;
               }
+
             }
 
             requestAnimationFrame(fallStep);
@@ -259,4 +326,59 @@ document.addEventListener("DOMContentLoaded", () => {
       runCrumpleStage();
     });
   }
+  // ====== PROJECT ROW HOVER LOGIC (SLIDING PANELS) ======
+  const projectRows = document.querySelectorAll(".projects-row");
+
+  projectRows.forEach((row) => {
+    const leftCard = row.querySelector(".project-card--left");
+    const rightCard = row.querySelector(".project-card--right");
+
+    if (!leftCard || !rightCard) return;
+
+    // Hover: left card
+    leftCard.addEventListener("mouseenter", () => {
+      row.classList.add("hover-left");
+      row.classList.remove("hover-right");
+    });
+
+    // Hover: right card
+    rightCard.addEventListener("mouseenter", () => {
+      row.classList.add("hover-right");
+      row.classList.remove("hover-left");
+    });
+
+    // When leaving the whole row, reset
+    row.addEventListener("mouseleave", () => {
+      row.classList.remove("hover-left", "hover-right");
+    });
+
+    // Keyboard focus support
+    leftCard.addEventListener("focusin", () => {
+      row.classList.add("hover-left");
+      row.classList.remove("hover-right");
+    });
+
+    rightCard.addEventListener("focusin", () => {
+      row.classList.add("hover-right");
+      row.classList.remove("hover-left");
+    });
+
+    row.addEventListener("focusout", (event) => {
+      if (!row.contains(event.relatedTarget)) {
+        row.classList.remove("hover-left", "hover-right");
+      }
+    });
+  });
+
+    // ====== ABOUT CARD SLIDE TOGGLE ======
+  const aboutShell = document.querySelector(".about-shell");
+  const aboutSlideBtn = document.querySelector(".about-slide-btn");
+
+  if (aboutShell && aboutSlideBtn) {
+    aboutSlideBtn.addEventListener("click", () => {
+      aboutShell.classList.toggle("about-slid-right");
+    });
+  }
+
 });
+

@@ -2,11 +2,135 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Vincent Feng | My Projects</title>
+  <title>Your Name | Projects</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+  <div class="page-shell">
+    <header class="site-header">
+      <div class="container header-content">
+        <div class="logo">
+          <a href="home.html" class="nav-link">Vincent Feng</a>
+        </div>
+        <nav class="nav">
+          <a href="projects.html" class="nav-link active">Projects</a>
+          <a href="resume.html" class="nav-link">Resume</a>
+        </nav>
+      </div>
+    </header>
 
+    <main>
+      <!-- Projects intro -->
+      <section class="projects-hero">
+        <div class="container">
+          <h1>Projects</h1>
+          <p>
+            A selection of things I’ve been building and experimenting with.
+            Hover over each project tile to see more details.
+          </p>
+        </div>
+      </section>
+
+      <!-- Projects grid -->
+      <section class="projects-grid">
+        <div class="container">
+          <!-- Row 1 -->
+          <div class="projects-row">
+            <!-- Left project box -->
+            <article class="project-card project-card--left" tabindex="0">
+              <div class="project-thumb"
+                  style="background-image: url('projecttest1.png');">
+                <div class="project-label">
+                  <span class="project-label-title">Project One</span>
+                </div>
+              </div>
+            </article>
+
+            <!-- Right project box -->
+            <article class="project-card project-card--right" tabindex="0">
+              <div class="project-thumb"
+                  style="background-image: url('projecttest2.png');">
+                <div class="project-label">
+                  <span class="project-label-title">Project Two</span>
+                </div>
+              </div>
+            </article>
+
+            <!-- Sliding panels for row 1 -->
+            <div class="project-panel project-panel--left">
+              <h3>Project One</h3>
+              <p>
+                Short description of project one.
+              </p>
+              <a href="#" class="project-link" target="_blank">View project →</a>
+            </div>
+
+            <div class="project-panel project-panel--right">
+              <h3>Project Two</h3>
+              <p>
+                Short description of project two.
+              </p>
+              <a href="#" class="project-link" target="_blank">View project →</a>
+            </div>
+          </div>
+
+
+          <!-- Row 2 -->
+          <div class="projects-row">
+            <article class="project-card project-card--left" tabindex="0">
+              <div class="project-thumb"
+                  style="background-image: url('projecttest3.png');">
+                <div class="project-label">
+                  <span class="project-label-title">Project Three</span>
+                </div>
+              </div>
+            </article>
+
+            <article class="project-card project-card--right" tabindex="0">
+              <div class="project-thumb"
+                  style="background-image: url('projecttest4.png');">
+                <div class="project-label">
+                  <span class="project-label-title">Project Four</span>
+                </div>
+              </div>
+            </article>
+
+            <div class="project-panel project-panel--left">
+              <h3>Project Three</h3>
+              <p>
+                Short description of project three.
+              </p>
+              <a href="#" class="project-link" target="_blank">View project →</a>
+            </div>
+
+            <div class="project-panel project-panel--right">
+              <h3>Project Four</h3>
+              <p>
+                Short description of project four.
+              </p>
+              <a href="#" class="project-link" target="_blank">View project →</a>
+            </div>
+          </div>
+          <!-- Add more rows as needed -->
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <p>© <span id="year"></span> Vincent Feng. All rights reserved.</p>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Same JS file as on index.html -->
+  <script src="main.js" defer></script>
 </body>
 </html>
