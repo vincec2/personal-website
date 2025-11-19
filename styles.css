@@ -754,6 +754,20 @@ body {
   padding: 3rem 0 1.5rem;
 }
 
+.projects-header-card {
+  background: #060606;
+  background: linear-gradient(171deg, rgba(6, 6, 6, 1) 0%, rgba(50, 70, 166, 1) 65%, rgba(193, 205, 255, 1) 100%);
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(148, 163, 184, 0.45);
+  padding: 1.4rem 1.5rem 1.6rem;
+  box-shadow: 0 18px 35px rgba(15, 23, 42, 0.75);
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  /* center it a bit in the section */
+  margin-top: 0.5rem;
+}
+
 .projects-hero h1 {
   font-size: 1.9rem;
   margin: 0 0 0.5rem;
@@ -775,7 +789,7 @@ body {
   display: flex;
   gap: 1.4rem;
   align-items: stretch;
-  margin-bottom: 2.2rem;
+  margin-bottom: 10rem;
 }
 
 /* Project cards (the big image boxes) */
@@ -812,6 +826,74 @@ body {
   position: relative;
 }
 
+/* Slider container */
+.project-slides {
+  position: absolute;
+  inset: 0;
+}
+
+/* Each slide covers the thumb */
+.project-slide {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+.project-slide.is-active {
+  opacity: 1;
+}
+
+/* Slide buttons */
+.project-slide-btn {
+  position: absolute;
+  top: 0.7rem;
+  bottom: auto;
+  transform: translateY(-50%);
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.7);
+  background: rgba(15, 23, 42, 0.85);
+  color: var(--muted);
+  font-size: 1.1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 3;
+  padding: 0;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+/* Prev: slightly left of center */
+.project-slide-btn--prev {
+  left: 50%;
+  transform: translate(-130%, 0); /* adjust -130% to move more/less left */
+}
+
+/* Next: slightly right of center */
+.project-slide-btn--next {
+  left: 50%;
+  transform: translate(30%, 0);   /* adjust 30% to move more/less right */
+}
+
+/* Make sure label + panel sit above slides/buttons */
+.project-label {
+  z-index: 4; /* add this to your existing .project-label block */
+}
+
+.project-panel {
+  z-index: 5; /* sits above cards/slides/buttons */
+}
+
 /* Title banner over the image near the bottom */
 .project-label {
   position: absolute;
@@ -839,22 +921,9 @@ body {
   letter-spacing: 0.03em;
 }
 
-/* Slight lift on hover for a bit of motion */
-.project-card:hover .project-label {
-  transform: translateY(-4px);
-}
-
-
-.project-card:hover .project-thumb {
-  transform: scale(1.04);
-  filter: saturate(1.2) brightness(1.05);
-}
-
 /* Info panels */
 .project-panel {
   position: absolute;
-  top: 8%;
-  bottom: 8%;
   width: var(--project-panel-width);
   border-radius: var(--radius-lg);
   padding: 1rem 1.25rem;

@@ -9,7 +9,7 @@
     rel="stylesheet"
   />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Your Name | Projects</title>
+  <title>Vincent Feng | Projects</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -20,7 +20,6 @@
           <a href="index.html" class="nav-link">Vincent Feng</a>
         </div>
         <nav class="nav">
-          <a href="projects.html" class="nav-link active">Projects</a>
           <a href="resume.html" class="nav-link">Resume</a>
         </nav>
       </div>
@@ -30,11 +29,13 @@
       <!-- Projects intro -->
       <section class="projects-hero">
         <div class="container">
-          <h1>Projects</h1>
-          <p>
-            A selection of things I’ve been building and experimenting with.
-            Hover over each project tile to see more details.
-          </p>
+          <div class="projects-header-card">
+            <h1>Projects</h1>
+            <p>
+              A selection of things I’ve been building and experimenting with.
+              Hover over each project tile to see more details.
+            </p>
+          </div>
         </div>
       </section>
 
@@ -45,13 +46,35 @@
           <div class="projects-row">
             <!-- Left project box -->
             <article class="project-card project-card--left" tabindex="0">
-              <div class="project-thumb"
-                  style="background-image: url('projecttest1.png');">
+              <div class="project-thumb">
+                <div class="project-slides">
+                  <div class="project-slide is-active"
+                      style="background-image: url('MyWishlist1.png');"></div>
+                  <div class="project-slide"
+                      style="background-image: url('MyWishlist2.png');"></div>
+                </div>
+
+                <button
+                  class="project-slide-btn project-slide-btn--prev"
+                  type="button"
+                  aria-label="Previous image"
+                >
+                  ‹
+                </button>
+                <button
+                  class="project-slide-btn project-slide-btn--next"
+                  type="button"
+                  aria-label="Next image"
+                >
+                  ›
+                </button>
+
                 <div class="project-label">
-                  <span class="project-label-title">Project One</span>
+                  <span class="project-label-title">MyWishlist – In Progress</span>
                 </div>
               </div>
             </article>
+
 
             <!-- Right project box -->
             <article class="project-card project-card--right" tabindex="0">
@@ -65,9 +88,12 @@
 
             <!-- Sliding panels for row 1 -->
             <div class="project-panel project-panel--left">
-              <h3>Project One</h3>
+              <h3>MyWishlist</h3>
               <p>
-                Short description of project one.
+                MyWishlist is a social media web application that me and one other are creating
+                that will allow friends to share their wishlists and be able to host an online
+                Secret Santa! Uses PostgreSQL to store wishlists, React for frontend, and Node.js
+                for backend to achieve client-server communication.
               </p>
               <a href="#" class="project-link" target="_blank">View project →</a>
             </div>

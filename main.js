@@ -380,5 +380,44 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+    // ====== PROJECT IMAGE SLIDERS ======
+  const sliderCards = document.querySelectorAll(".project-card");
+
+  sliderCards.forEach((card) => {
+    const slides = card.querySelectorAll(".project-slide");
+    if (slides.length <= 1) return; // no slider if only one image
+
+    let currentIndex = 0;
+
+    // Make sure exactly one slide is active
+    slides.forEach((slide, index) => {
+      slide.classList.toggle("is-active", index === 0);
+    });
+
+    const prevBtn = card.querySelector(".project-slide-btn--prev");
+    const nextBtn = card.querySelector(".project-slide-btn--next");
+
+    function showSlide(newIndex) {
+      slides[currentIndex].classList.remove("is-active");
+      currentIndex = (newIndex + slides.length) % slides.length; // wrap around
+      slides[currentIndex].classList.add("is-active");
+    }
+
+    if (prevBtn) {
+      prevBtn.addEventListener("click", (event) => {
+        event.stopPropagation(); // don't mess with hover / row clicks
+        showSlide(currentIndex - 1);
+      });
+    }
+
+    if (nextBtn) {
+      nextBtn.addEventListener("click", (event) => {
+        event.stopPropagation();
+        showSlide(currentIndex + 1);
+      });
+    }
+  });
+
+
 });
 
