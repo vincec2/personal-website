@@ -20,7 +20,7 @@
           <a href="index.html" class="nav-link">Vincent Feng</a>
         </div>
         <nav class="nav">
-          <a href="resume.html" class="nav-link">Resume</a>
+          <a href="./assets/Resume.pdf" class="nav-link">Resume</a>
         </nav>
       </div>
     </header>
@@ -49,9 +49,9 @@
               <div class="project-thumb">
                 <div class="project-slides">
                   <div class="project-slide is-active"
-                      style="background-image: url('MyWishlist1.png');"></div>
+                      style="background-image: url('./assets/images/MyWishlist1.png');"></div>
                   <div class="project-slide"
-                      style="background-image: url('MyWishlist2.png');"></div>
+                      style="background-image: url('./assets/images/MyWishlist2.png');"></div>
                 </div>
 
                 <button
@@ -78,10 +78,30 @@
 
             <!-- Right project box -->
             <article class="project-card project-card--right" tabindex="0">
-              <div class="project-thumb"
-                  style="background-image: url('projecttest2.png');">
+              <div class="project-thumb">
+                <div class="project-slides">
+                  <div class="project-slide is-active"
+                      style="background-image: url('./assets/images/CPDIcon.png');"></div>
+                  <div class="project-slide"
+                      style="background-image: url('./assets/images/CPD1.png');"></div>
+                </div>
+
+                <button
+                  class="project-slide-btn project-slide-btn--prev"
+                  type="button"
+                  aria-label="Previous image"
+                >
+                  ‹
+                </button>
+                <button
+                  class="project-slide-btn project-slide-btn--next"
+                  type="button"
+                  aria-label="Next image"
+                >
+                  ›
+                </button>
                 <div class="project-label">
-                  <span class="project-label-title">Project Two</span>
+                  <span class="project-label-title">Cloud Productivity Dashboard</span>
                 </div>
               </div>
             </article>
@@ -95,24 +115,32 @@
                 Secret Santa! Uses PostgreSQL to store wishlists, React for frontend, and Node.js
                 for backend to achieve client-server communication.
               </p>
-              <a href="#" class="project-link" target="_blank">View project →</a>
+              <a href="./index.html" class="project-link" target="_blank">View project →</a>
             </div>
 
             <div class="project-panel project-panel--right">
-              <h3>Project Two</h3>
+              <h3>Cloud Productivity Dashboard</h3>
               <p>
-                Short description of project two.
+                Cloud Productivity Dashboard (CPD) is an windows software created with React
+                and ElectronJs. It saves projects and their tasks inside of a .json file in the user's
+                local computer's AppData/Roaming. Features include multiple settings to customize the
+                dashboard, a countdown/pomodoro. Check link in the README.md in the repository to check out
+                the software!
               </p>
-              <a href="#" class="project-link" target="_blank">View project →</a>
+              <a href="https://github.com/vincec2/Cloud-Productivity-Dashboard-Software" class="project-link" target="_blank">View project →</a>
+              <p>CPD with NestJs backend implementation + Firebase Authentication + Firestore (NoSQL) +
+                server-side access through Firebase Admin SDK.
+              </p>
+              <a href="https://github.com/vincec2/Cloud-Productivity-Dashboard-With-Firebase-Servers" class="project-link" target="_blank">View project →</a>
             </div>
           </div>
 
 
           <!-- Row 2 -->
-          <div class="projects-row">
+          <!-- <div class="projects-row">
             <article class="project-card project-card--left" tabindex="0">
               <div class="project-thumb"
-                  style="background-image: url('projecttest3.png');">
+                  style="background-image: url('./assets/images/projecttest3.png');">
                 <div class="project-label">
                   <span class="project-label-title">Project Three</span>
                 </div>
@@ -121,7 +149,7 @@
 
             <article class="project-card project-card--right" tabindex="0">
               <div class="project-thumb"
-                  style="background-image: url('projecttest4.png');">
+                  style="background-image: url('./assets/images/projecttest4.png');">
                 <div class="project-label">
                   <span class="project-label-title">Project Four</span>
                 </div>
@@ -143,7 +171,7 @@
               </p>
               <a href="#" class="project-link" target="_blank">View project →</a>
             </div>
-          </div>
+          </div> -->
           <!-- Add more rows as needed -->
         </div>
       </section>

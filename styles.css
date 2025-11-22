@@ -570,7 +570,7 @@ body {
 .hand-graphic {
   width: 100%;
   height: 100%;
-  background-image: url("hand.png");
+  background-image: url("./assets/images/hand.png");
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
@@ -631,7 +631,7 @@ body {
 .shot-paper {
   width: 39px;
   height: 39px;
-  background-image: url("paper.png"); /* <-- your crumpled paper asset */
+  background-image: url("./assets/images/paper.png"); /* <-- your crumpled paper asset */
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
@@ -643,7 +643,7 @@ body {
 .shot-net {
   width: 110px;
   height: 110px;
-  background-image: url("net.png"); /* <-- your basketball net asset */
+  background-image: url("./assets/images/net.png"); /* <-- your basketball net asset */
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
@@ -734,7 +734,7 @@ body {
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  background-image: url("scoreboard.png"); /* your scoreboard image */
+  background-image: url("./assets/images/scoreboard.png"); /* your scoreboard image */
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
@@ -972,6 +972,7 @@ body {
 .projects-row.hover-left .project-panel--left {
   opacity: 1;
   transform: translateX(0);
+  pointer-events: auto;
 }
 
 .projects-row.hover-left .project-card--right {
@@ -988,6 +989,7 @@ body {
 .projects-row.hover-right .project-panel--right {
   opacity: 1;
   transform: translateX(0);
+  pointer-events: auto;
 }
 
 .projects-row.hover-right .project-card--right,

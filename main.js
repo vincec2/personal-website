@@ -1,10 +1,10 @@
 document.addEventListener("DOMContentLoaded", () => {
   // Preload crumple images so they don't flash blank on first use
   const crumpleStageUrls = [
-    "paper_stage1.png",
-    "paper_stage2.png",
-    "paper_stage3.png",
-    "paper.png",
+    "./assets/images/paper_stage1.png",
+    "./assets/images/paper_stage2.png",
+    "./assets/images/paper_stage3.png",
+    "./assets/images/paper.png",
   ];
 
   crumpleStageUrls.forEach((src) => {
@@ -204,10 +204,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // ====== CRUMPLE STAGES (smooth, no flicker) ======
       const crumpleStages = [
-        "url('paper_stage1.png')",
-        "url('paper_stage2.png')",
-        "url('paper_stage3.png')",
-        "url('paper.png')", // final crumpled ball
+        "url('./assets/images/paper_stage1.png')",
+        "url('./assets/images/paper_stage2.png')",
+        "url('./assets/images/paper_stage3.png')",
+        "url('./assets/images/paper.png')", // final crumpled ball
       ];
 
       let stageIndex = 0;
