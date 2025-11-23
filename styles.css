@@ -196,6 +196,48 @@ body {
   margin-top: 1.2rem;
 }
 
+/* Text block to the right of the buttons */
+.hero-anim-links {
+  font-size: 0.8rem;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.hero-anim-label {
+  display: block;
+  margin-bottom: 0.25rem;
+  color: black;
+}
+
+.hero-anim-links-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.hero-anim-link {
+  text-decoration: none;
+  color: var(--accent);
+  font-weight: 500;
+}
+
+.hero-anim-link:hover {
+  text-decoration: underline;
+}
+
+.hero-anim-separator {
+  color: var(--muted);
+}
+
+/* On small screens, let it wrap under the buttons nicely */
+@media (max-width: 640px) {
+  .hero-actions-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
 /* Buttons */
 .btn {
   display: inline-flex;
